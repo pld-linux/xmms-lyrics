@@ -7,12 +7,13 @@ License:	GPL
 Group:		X11/Applications/Multimedia
 Source0:	%{name}-%{version}.tar.gz
 Patch0:		%{name}-fixes.patch
+Patch1:		%{name}-ac.patch
 URL:		http://www.albedo.art.pl/~kbryd/plugin/
 Requires:	xmms
-BuildRequires:	xmms-devel
-BuildRequires:	gtk+-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	gtk+-devel
+BuildRequires:	xmms-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -29,11 +30,14 @@ pozwalaj±ce wstawiaæ oznaczenia czasu do tekstów.
 %prep
 %setup  -q
 %patch0 -p1
+%patch1 -p1
 
 %build
-autoheader
+rm -rf missing
+%{__autoheader}
+%{__aclocal}
 %{__autoconf}
-automake -i
+%{__automake}
 
 %configure
 %{__make} "EXTRA_CFLAGS=%{rpmcflags} -DLOCALEDIR=\\\"%{_datadir}/locale\\\""
