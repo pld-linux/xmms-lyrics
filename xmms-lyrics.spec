@@ -16,8 +16,6 @@ BuildRequires:	gtk+-devel
 BuildRequires:	xmms-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 
 %description
 XMMS plugin for song lyrics displaying. It has built-in tool for
