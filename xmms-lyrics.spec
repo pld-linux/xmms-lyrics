@@ -2,7 +2,7 @@ Summary:	XMMS plugin for song lyrics displaying
 Summary(pl):	Wtyczka do XMMS wy¶wietlaj±ca teksty piosenek
 Name:		xmms-lyrics
 Version:	cvs20000821
-Release:	2
+Release:	3
 Group:		X11/Applications/Multimedia
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
@@ -29,7 +29,9 @@ pozwalaj±ce wstawiaæ oznaczenia czasu do tekstów.
 %setup  -q
 
 %build
-autoheader; autoconf; automake
+autoheader
+autoconf
+automake
 
 %configure
 
