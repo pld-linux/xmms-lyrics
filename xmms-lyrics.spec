@@ -8,7 +8,7 @@ Group(de):	X11/Applikationen/Multimedia
 Group(pl):	X11/Aplikacje/Multimedia
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
-URL:		http://iwaki.ahoj.pl/~kbryd
+URL:		http://www.albedo.art.pl/~kbryd/plugin/
 Requires:	xmms
 BuildRequires:	xmms-devel
 BuildRequires:	gtk+-devel
