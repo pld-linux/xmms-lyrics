@@ -2,10 +2,11 @@ Summary:	XMMS plugin for song lyrics displaying
 Summary(pl):	Wtyczka do XMMS wy¶wietlaj±ca teksty piosenek
 Name:		xmms-lyrics
 Version:	cvs20000821
-Release:	3
+Release:	4
 Group:		X11/Applications/Multimedia
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
+Patch0:		%{name}-fixes.patch
 URL:		http://www.albedo.art.pl/~kbryd/plugin/
 Requires:	xmms
 BuildRequires:	xmms-devel
@@ -18,8 +19,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_mandir		%{_prefix}/man
 
 %description
-XMMS plugin for song lyrics displaying. It has built-in too for
-insering time-tags into lyrics.
+XMMS plugin for song lyrics displaying. It has built-in tool for
+inserting time-tags into lyrics.
 
 %description -l pl
 Wtyczka do XMMS wy¶wietlaj±ca teksty piosenek. Ma wbudowane narzêdzie
@@ -27,15 +28,15 @@ pozwalaj±ce wstawiaæ oznaczenia czasu do tekstów.
 
 %prep
 %setup  -q
+%patch0 -p1
 
 %build
 autoheader
 autoconf
-automake
+automake -i
 
 %configure
-
-%{__make}
+%{__make} "EXTRA_CFLAGS=%{rpmcflags} -DLOCALEDIR=\\\"%{_datadir}/locale\\\""
 
 %install
 rm -rf $RPM_BUILD_ROOT
