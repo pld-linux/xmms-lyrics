@@ -4,8 +4,6 @@ Name:		xmms-lyrics
 Version:	cvs20000821
 Release:	2
 Group:		X11/Applications/Multimedia
-Group(de):	X11/Applikationen/Multimedia
-Group(pl):	X11/Aplikacje/Multimedia
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
 URL:		http://www.albedo.art.pl/~kbryd/plugin/
