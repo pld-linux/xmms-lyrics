@@ -32,7 +32,7 @@ pozwalaj±ce wstawiaæ oznaczenia czasu do tekstów.
 
 %build
 autoheader
-autoconf
+%{__autoconf}
 automake -i
 
 %configure
