@@ -2,7 +2,7 @@ Summary:	XMMS plugin for song lyrics displaying
 Summary(pl):	Wtyczka do XMMS wy¶wietlaj±ca teksty piosenek
 Name:		xmms-lyrics
 Version:	cvs20000821
-Release:	6
+Release:	7
 License:	GPL
 Group:		X11/Applications/Sound
 Source0:	%{name}-%{version}.tar.gz
@@ -10,14 +10,13 @@ Source0:	%{name}-%{version}.tar.gz
 Patch0:		%{name}-fixes.patch
 Patch1:		%{name}-ac.patch
 URL:		http://www.albedo.art.pl/~kbryd/plugin/
-Requires:	xmms
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gtk+-devel
+BuildRequires:	rpmbuild(macros) >= 1.125
 BuildRequires:	xmms-devel
+Requires:	xmms
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_xmms_plugin_dir	%(xmms-config --general-plugin-dir)
 
 %description
 XMMS plugin for song lyrics displaying. It has built-in tool for
@@ -56,4 +55,4 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README ChangeLog
-%attr(755,root,root) %{_xmms_plugin_dir}/*so
+%attr(755,root,root) %{xmms_general_plugindir}/*so
