@@ -17,8 +17,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_mandir		%{_prefix}/man
 
 %description
-XMMS plugin for song lyrics displaying. It has built-in too for insering
-time-tags into lyrics.
+XMMS plugin for song lyrics displaying. It has built-in too for
+insering time-tags into lyrics.
 
 %description -l pl
 Wtyczka do XMMS wy¶wietlaj±ca teksty piosenek. Ma wbudowane narzêdzie
