@@ -12,6 +12,8 @@ URL:		http://www.albedo.art.pl/~kbryd/plugin/
 Requires:	xmms
 BuildRequires:	xmms-devel
 BuildRequires:	gtk+-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
