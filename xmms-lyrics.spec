@@ -31,7 +31,7 @@ pozwalaj±ce wstawiaæ oznaczenia czasu do tekstów.
 %build
 autoheader; autoconf; automake
 
-%configure 
+%configure
 
 %{__make}
 
@@ -41,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR="$RPM_BUILD_ROOT"
 
-gzip -9nf AUTHORS NEWS README ChangeLog 
+gzip -9nf AUTHORS NEWS README ChangeLog
 
 %find_lang %{name} --all-name
 
