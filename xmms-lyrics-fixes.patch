@@ -1,0 +1,133 @@
+--- xmms-lyrics-cvs20000821/conf.c	Mon Aug 21 15:29:44 2000
++++ xmms-lyrics-cvs20000821.new/conf.c	Sat Mar  9 11:39:20 2002
+@@ -143,8 +143,9 @@
+ void
+ file_ok_sel(GtkWidget * w, GtkFileSelection * fs)
+ {
+-    strcpy(lyrics_dir_path,
+-	   gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs)));
++    strncpy(lyrics_dir_path,
++	   gtk_file_selection_get_filename(GTK_FILE_SELECTION(fs)), sizeof(lyrics_dir_path));
++	lyrics_dir_path[sizeof(lyrics_dir_path) - 1] = '\0';
+ 
+     gtk_entry_set_text(GTK_ENTRY(string), lyrics_dir_path);
+     update_prefs();
+@@ -181,18 +182,22 @@
+ void *
+ font_ok_sel(GtkWidget * fontb)
+ {
+-    strcpy(lyrics_font,
+-	   gtk_font_selection_dialog_get_font_name
+-	   (GTK_FONT_SELECTION_DIALOG(font_browser)));
+-    gtk_entry_set_text(GTK_ENTRY(font), lyrics_font);
+-    update_prefs();
+-
+-    current_font = gdk_font_load(lyrics_font);
+-    if (current_font)
+-    {
+-	redraw_list();
+-	gtk_widget_destroy(font_browser);
+-    }
++	char *fontname;
++	
++	fontname = gtk_font_selection_dialog_get_font_name
++	   (GTK_FONT_SELECTION_DIALOG(font_browser));
++	if (fontname) {
++    	strncpy(lyrics_font, fontname, sizeof(lyrics_font));
++		lyrics_font[sizeof(lyrics_font) - 1] = '\0';
++		gtk_entry_set_text(GTK_ENTRY(font), lyrics_font);
++    	update_prefs();
++
++    	current_font = gdk_font_load(lyrics_font);
++    	if (current_font) {
++			redraw_list();
++			gtk_widget_destroy(font_browser);
++    	}
++	}
+ }
+ 
+ void *
+@@ -369,10 +374,14 @@
+ 	if (!cfg)
+ 	    cfg = xmms_cfg_new();
+ 
+-	if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_path", &tmp))
+-	    strcpy(lyrics_dir_path, tmp);
+-	if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_font", &tmp))
+-	    strcpy(lyrics_font, tmp);
++	if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_path", &tmp)) {
++	    strncpy(lyrics_dir_path, tmp, sizeof(lyrics_dir_path));
++		lyrics_dir_path[sizeof(lyrics_dir_path) - 1] = '\0';
++	}
++	if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_font", &tmp)) {
++	    strncpy(lyrics_font, tmp, sizeof(lyrics_font));
++		lyrics_font[sizeof(lyrics_font) - 1] = '\0';
++	}
+ 	if (xmms_cfg_read_string(cfg, "lyrics", "width", &tmp))
+ 	    width = atoi(tmp);
+ 	else
+--- xmms-lyrics-cvs20000821/creator.c	Mon Aug 21 15:48:03 2000
++++ xmms-lyrics-cvs20000821.new/creator.c	Sat Mar  9 08:20:51 2002
+@@ -129,7 +129,7 @@
+ file_ok_sel(GtkWidget * w, GtkFileSelection * fs)
+ {
+    GtkStyle *style;
+-   gchar *rows[1];
++   gchar *rows[2];
+    gchar buf[255];
+    FILE *fp;
+    gint line = 0;
+@@ -204,7 +204,7 @@
+    gint n;
+ 
+    playlist_pos = xmms_remote_get_playlist_pos(gp.xmms_session);
+-   playfile = xmms_remote_get_playlist_file(gp.xmms_session, playlist_pos);
++   playfile = xmms_remote_get_playlist_title(gp.xmms_session, playlist_pos);
+    buf = find_lyrics_file(playfile, 0, 0);
+ 
+    filew = (GtkObject *) gtk_file_selection_new(_("File selection"));
+@@ -220,9 +220,10 @@
+ 			     (GTK_FILE_SELECTION(filew)->cancel_button),
+ 			     "clicked", (GtkSignalFunc) gtk_widget_destroy,
+ 			     GTK_OBJECT(filew));
+-
+-   gtk_file_selection_set_filename(GTK_FILE_SELECTION(filew), buf);
+-
++	if (buf)
++		gtk_file_selection_set_filename(GTK_FILE_SELECTION(filew), buf);
++	else  if (playfile)
++		gtk_file_selection_set_filename(GTK_FILE_SELECTION(filew), playfile);
+    gtk_widget_show((GtkWidget *) filew);
+ }
+ 
+--- xmms-lyrics-cvs20000821/list.c	Mon Aug 21 15:44:46 2000
++++ xmms-lyrics-cvs20000821.new/list.c	Sat Mar  9 08:20:51 2002
+@@ -136,10 +136,15 @@
+       if (!xmms_cfg_read_int(cfg, "lyrics", "hide_mode", &hide_mode))
+ 	 hide_mode = 0;
+ 
+-      if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_path", &tmp))
+-	 strcpy(lyrics_dir_path, tmp);
+-      if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_font", &tmp))
+-	 strcpy(lyrics_font, tmp);
++      if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_path", &tmp)) {
++		strncpy(lyrics_dir_path, tmp, sizeof(lyrics_dir_path));
++		lyrics_dir_path[sizeof(lyrics_dir_path) - 1] = '\0';
++	}
++		
++      if (xmms_cfg_read_string(cfg, "lyrics", "lyrics_font", &tmp)) {
++		strncpy(lyrics_font, tmp, sizeof(lyrics_font));
++		lyrics_font[sizeof(lyrics_font) - 1] = '\0';
++	}
+ 
+       if (xmms_cfg_read_string(cfg, "lyrics", "width", &tmp))
+ 	 width = atoi(tmp);
+@@ -778,7 +783,7 @@
+       /* if yes, then get current song's position in the playlist */
+       /* and it's filename */
+       playlist_pos = xmms_remote_get_playlist_pos(gp.xmms_session);
+-      playfile = xmms_remote_get_playlist_file(gp.xmms_session, playlist_pos);
++      playfile = xmms_remote_get_playlist_title(gp.xmms_session, playlist_pos);
+       /* if current filename and position differs from the older ones then reload lyrics */
+       if (strcmp(last_file, playfile))
+       {
