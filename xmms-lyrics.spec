@@ -4,7 +4,7 @@ Name:		xmms-lyrics
 Version:	cvs20000821
 Release:	5
 License:	GPL
-Group:		X11/Applications/Multimedia
+Group:		X11/Applications/Sound
 Source0:	%{name}-%{version}.tar.gz
 Patch0:		%{name}-fixes.patch
 Patch1:		%{name}-ac.patch
