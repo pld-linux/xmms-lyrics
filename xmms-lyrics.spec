@@ -6,6 +6,7 @@ Release:	6
 License:	GPL
 Group:		X11/Applications/Sound
 Source0:	%{name}-%{version}.tar.gz
+# Source0-md5:	a60be0aafbed1b113275041c95ba127f
 Patch0:		%{name}-fixes.patch
 Patch1:		%{name}-ac.patch
 URL:		http://www.albedo.art.pl/~kbryd/plugin/
