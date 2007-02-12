@@ -1,5 +1,5 @@
 Summary:	XMMS plugin for song lyrics displaying
-Summary(pl.UTF-8):   Wtyczka dla XMMS-a wyświetlająca teksty piosenek
+Summary(pl.UTF-8):	Wtyczka dla XMMS-a wyświetlająca teksty piosenek
 Name:		xmms-lyrics
 Version:	cvs20000821
 Release:	7
